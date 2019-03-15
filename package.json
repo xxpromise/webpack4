@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "从零开始的Webpack4教程",
   "scripts": {
-    "start": "webpack-dev-server",
-    "dev": "webpack-dev-server"
+    "start": "webpack-dev-server --config ./config/webpack.dev.js",
+    "dev": "webpack-dev-server  --config ./config/webpack.dev.js",
+    "build": "webpack --config ./config/webpack.prod.js"
   },
   "keywords": [],
   "author": "xxpromise",

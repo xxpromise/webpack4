@@ -1,12 +1,10 @@
-const {resolve} = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: ['./src/js/app.js', './src/index.html'],
   output: {
-    filename: './js/[name].js',
-    path: resolve(__dirname, './dist')
+    filename: 'js/[name].[hash:8].js',   //添加了hash值, 实现静态资源的长期缓存
+    publicPath: '/'  //所有输出资源公共路径
   },
   module: {
     rules: [
@@ -43,10 +41,8 @@ module.exports = {
               {
                 loader: 'url-loader',
                 options: {
-                  outputPath: 'images/', //决定输出文件的位置
-                  publicPath: 'images/',
                   limit: 8 * 1024,  // 8kb大小以下的图片文件都用base64处理
-                  name: '[hash:7].[ext]'
+                  name: 'images/[name].[hash:8].[ext]'
                 }
               }
             ]
@@ -61,9 +57,7 @@ module.exports = {
             loader: 'file-loader',
             exclude: [/\.js$/, /\.html$/, /\.json$/],
             options: {
-              outputPath: 'media/',
-              publicPath: 'media/',
-              name: '[hash:7].[ext]',
+              name: 'media/[name].[hash:8].[ext]',
             },
           }
         ]
@@ -71,17 +65,9 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html'
-    }),
+    })
   ],
-  mode: 'development',
-  devtool: 'inline-source-map',
-  devServer: {
-    contentBase: './dist',
-    hot: true,
-    open: true
-  },
+  mode: 'production',  //修改为生产环境
 }
