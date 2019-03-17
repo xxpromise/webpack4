@@ -24,17 +24,33 @@ module.exports = {
             test: /\.js$/,
             exclude: /node_modules/,
             use: {
-              loader: "babel-loader"
+              loader: "babel-loader",
+              options: {
+                presets: ['@babel/preset-env'],
+                plugins: [
+                  "@babel/plugin-syntax-dynamic-import",
+                  [
+                    require.resolve("@babel/plugin-transform-runtime"),
+                    {
+                      "absoluteRuntime": false,
+                      "corejs": false,
+                      "helpers": false,
+                      "regenerator": true,
+                      "useESModules": false
+                    }
+                  ]
+                ]
+              }
             }
           },
           {
             test: /\.less$/,
             use: [{
-              loader: "style-loader"
+              loader: "style-loader" // creates style nodes from JS strings
             }, {
-              loader: "css-loader"
+              loader: "css-loader" // translates CSS into CommonJS
             }, {
-              loader: "less-loader"
+              loader: "less-loader" // compiles Less to CSS
             }]
           },
           {
@@ -46,7 +62,7 @@ module.exports = {
                   outputPath: 'images/', //决定输出文件的位置
                   publicPath: 'images/',
                   limit: 8 * 1024,  // 8kb大小以下的图片文件都用base64处理
-                  name: '[hash:8].[ext]'
+                  name: '[hash:7].[ext]'
                 }
               }
             ]
@@ -63,7 +79,7 @@ module.exports = {
             options: {
               outputPath: 'media/',
               publicPath: 'media/',
-              name: '[hash:8].[ext]',
+              name: '[hash:7].[ext]',
             },
           }
         ]
